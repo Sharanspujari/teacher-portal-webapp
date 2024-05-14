@@ -23,7 +23,9 @@ const AddUserForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
     dispatch(addStudent(studentData));
+
     setStudentData({
       name: "",
       subject: "",

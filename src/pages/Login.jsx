@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { login } from "../features/authSlice";
 import { useNavigate } from "react-router-dom";
+import { SyncLoader } from "react-spinners";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ const Login = () => {
     username: "",
     password: "",
   });
-
+  const [loader, setLoader] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   // this function is to  display the password to user
@@ -34,14 +35,17 @@ const Login = () => {
   // this function is used to submit user credentials
   const handleSubmit = (event) => {
     event.preventDefault();
+    setLoader(true);
     const { username, password } = loginInfo;
 
     if (username === "admin" && password === "password") {
       dispatch(login(username));
-      toast.success("successfully logged in");
+
       setTimeout(() => {
+        setLoader(false);
         navigate("/home");
       }, 2000);
+      toast.success("successfully logged in");
     } else {
       toast.error("Invalid username or password ");
     }
@@ -136,6 +140,11 @@ const Login = () => {
           </div>
         </div>
         <ToastContainer toastClassName="fixed top-[11.5%] z-99 bottom-[10%] right-[8%] bg-yellow-300 text-white" />
+        {loader && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <SyncLoader color="white" size={15} />
+          </div>
+        )}
       </section>
     </>
   );
