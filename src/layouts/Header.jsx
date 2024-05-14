@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 const Header = () => {
   return (
-    <header>
+    <header className="fixed w-full z-50 top-0">
       <nav className="bg-white border-gray-200 px-4 lg:px-6 py-4">
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
           <Link to="/home" className="flex items-center">
