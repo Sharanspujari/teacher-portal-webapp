@@ -2,6 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import AddUserForm from "./AddUserForm";
 
 const Model = ({ setOpen, open }) => {
   const handleClose = () => setOpen(false);
@@ -27,8 +28,8 @@ const Model = ({ setOpen, open }) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            form goes here
+          <Typography sx={{ mt: 2 }}>
+            <AddUserForm />
           </Typography>
         </Box>
       </Modal>

@@ -128,7 +128,7 @@ const Login = () => {
                     type="submit"
                     className="w-[60%] m-auto  text-white bg-black hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium text-sm px-5 py-2.5 text-center"
                   >
-                    Login in
+                    Login
                   </button>
                 </div>
               </form>
