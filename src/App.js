@@ -5,7 +5,7 @@ import { Route, Routes } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <Routes>
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/home" element={<Dashboard />} />
