@@ -1,9 +1,39 @@
-import React from 'react'
+import React from "react";
+
+const studentData = [
+  {
+    name: "Ashok",
+    subject: "Chemistry",
+    marks: 75,
+  },
+  {
+    name: "Ashok",
+    subject: "Chemistry",
+    marks: 75,
+  },
+  {
+    name: "Ashok",
+    subject: "Chemistry",
+    marks: 75,
+  },
+  {
+    name: "Ashok",
+    subject: "Chemistry",
+    marks: 75,
+  },
+  {
+    name: "Ashok",
+    subject: "Chemistry",
+    marks: 75,
+  },
+];
 
 const Main = () => {
   return (
-    <div>Main</div>
-  )
-}
+    <main>
+     main
+    </main>
+  );
+};
 
-export default Main
+export default Main;

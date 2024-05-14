@@ -1,9 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import HttpsOutlinedIcon from "@mui/icons-material/HttpsOutlined";
+import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
+import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 
 const Login = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  // this function is to  display the password to user
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <>
       <section>
@@ -29,7 +38,11 @@ const Login = () => {
                       placeholder="Enter username"
                       required=""
                     />
-                    <PersonOutlineOutlinedIcon className="absolute top-2 left-2" />
+
+                    <PersonOutlineOutlinedIcon
+                      className="absolute top-2 left-2"
+                      onClick={togglePassword}
+                    />
                     <span className="w-[1.5px] h-6 bg-gray-300 absolute top-2 left-10"></span>
                   </div>
                 </div>
@@ -42,7 +55,7 @@ const Login = () => {
                   </label>
                   <div className="relative">
                     <input
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       name="password"
                       id="password"
                       placeholder="••••••••"
@@ -50,6 +63,18 @@ const Login = () => {
                       required=""
                     />
                     <HttpsOutlinedIcon className="absolute top-2 left-2" />
+
+                    {showPassword ? (
+                      <VisibilityOffOutlinedIcon
+                        className="absolute top-2 right-4"
+                        onClick={togglePassword}
+                      />
+                    ) : (
+                      <RemoveRedEyeOutlinedIcon
+                        className="absolute top-2 right-4"
+                        onClick={togglePassword}
+                      />
+                    )}
                     <span className="w-[1.5px] h-6 bg-gray-300 absolute top-2 left-10"></span>
                   </div>
                 </div>
