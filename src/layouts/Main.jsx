@@ -3,10 +3,9 @@ import React from "react";
 import Model from "../components/Model";
 import Table from "../components/Table";
 
-
-
 const Main = () => {
   const [open, setOpen] = React.useState(false);
+
   const handleOpen = () => setOpen(true);
 
   return (

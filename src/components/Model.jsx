@@ -5,6 +5,7 @@ import Modal from "@mui/material/Modal";
 
 const Model = ({ setOpen, open }) => {
   const handleClose = () => setOpen(false);
+
   const style = {
     position: "absolute",
     top: "50%",
@@ -26,11 +27,8 @@ const Model = ({ setOpen, open }) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-           Student form 
-          </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-           student form
+            form goes here
           </Typography>
         </Box>
       </Modal>

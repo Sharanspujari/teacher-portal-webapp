@@ -1,7 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import { logout } from "../features/authSlice";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const Header = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const logOutFunc = () => {
+    if (window.confirm("Are you sure you want to logout ?")) {
+      dispatch(logout());
+      navigate("/");
+    }
+  };
+
   return (
     <header className="fixed w-full z-50 top-0">
       <nav className="bg-white border-gray-200 px-4 lg:px-6 py-4">
@@ -22,11 +35,8 @@ const Header = () => {
               </Link>
             </li>
 
-            <li>
-              <Link
-                to="/login"
-                className="text-gray-800 font-bold bg-primary-700 hover:bg-gray-100 hover:text-red-600 font-medium rounded-lg  text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none "
-              >
+            <li onClick={logOutFunc}>
+              <Link className="text-gray-800 font-bold bg-primary-700 hover:bg-gray-100 hover:text-red-600 font-medium rounded-lg  text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none ">
                 Logout
               </Link>
             </li>
