@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
+import { useSelector } from "react-redux";
 const studentData = [
   {
     id: 0,
@@ -40,6 +41,9 @@ const Table = () => {
     setisOpenAction(isOpenAction === id ? -1 : id);
   };
 
+  const students = useSelector((state) => state.studentInfo.studentsList);
+  console.log("students: ", students);
+
   return (
     <div className="relative overflow-x-auto px-10 py-4  sm:rounded-lg">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
@@ -60,13 +64,18 @@ const Table = () => {
           </tr>
         </thead>
         <tbody>
-          {studentData?.map((student, i) => {
+          {students?.map((student, i) => {
             return (
               <tr
                 key={student.id}
                 className="bg-white text-gray-700 font-semibold border-b "
               >
-                <td className="px-6 py-5">{student.name}</td>
+                <td className="px-6 py-5 flex items-center gap-4">
+                  <span className=" w-8 h-8 uppercase rounded-full flex items-center justify-center bg-blue-400 text-white">
+                    {student.name.slice(0, 1)}
+                  </span>
+                  {student.name}
+                </td>
                 <td className="px-6 py-5">{student.subject}</td>
                 <td className="px-6 py-5">{student.marks}</td>
                 <td className="px-6 py-6 relative  ">
