@@ -1,38 +1,7 @@
 import React, { useState } from "react";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import { useSelector } from "react-redux";
-const studentData = [
-  {
-    id: 0,
-    name: "Ashok",
-    subject: "Chemistry",
-    marks: 75,
-  },
-  {
-    id: 1,
-    name: "Ashok",
-    subject: "Chemistry",
-    marks: 75,
-  },
-  {
-    id: 2,
-    name: "Ashok",
-    subject: "Chemistry",
-    marks: 75,
-  },
-  {
-    id: 3,
-    name: "Ashok",
-    subject: "Chemistry",
-    marks: 75,
-  },
-  {
-    id: 4,
-    name: "Ashok",
-    subject: "Chemistry",
-    marks: 75,
-  },
-];
+
 const Table = () => {
   const [isOpenAction, setisOpenAction] = useState(-1);
 

@@ -9,6 +9,7 @@ function App() {
   return (
     <div>
       
+      {/* wrapping  <ErrorBoudary/> component to catch any error occured in its child component */}
       <ErrorBoundary>
         <Routes>
           <Route exact path="/" element={<Login />} />

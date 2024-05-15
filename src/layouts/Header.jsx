@@ -8,6 +8,7 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // Asking user for logout confirmation through this function
   const logOutFunc = () => {
     if (window.confirm("Are you sure you want to logout ?")) {
       dispatch(logout());

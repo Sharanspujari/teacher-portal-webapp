@@ -5,6 +5,8 @@ import Modal from "@mui/material/Modal";
 import AddUserForm from "./AddUserForm";
 
 const Model = ({ setOpen, open }) => {
+
+  // this function is used to close Currenlty opened model 
   const handleClose = () => setOpen(false);
 
   const style = {

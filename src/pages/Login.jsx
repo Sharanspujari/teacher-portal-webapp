@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import HttpsOutlinedIcon from "@mui/icons-material/HttpsOutlined";
@@ -15,29 +15,30 @@ const USERNAME = "admin";
 const PASSWORD = "Password@123";
 
 const Login = () => {
-  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loginInfo, setLoginInfo] = useState({
     username: "",
     password: "",
   });
+  console.log("loginInfo: ", loginInfo);
   const [loader, setLoader] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   // this function is to  display the password to user
-  const togglePassword = () => {
-    setShowPassword(!showPassword);
-  };
+  const togglePassword = useCallback(() => {
+    setShowPassword((prevshowPassword) => !prevshowPassword);
+  }, []);
 
   // this function is used catch input data from login form
-  const handleChange = (event) => {
+
+  const handleChange = useCallback((event) => {
     const { name, value } = event.target;
     setLoginInfo((prevInfo) => ({ ...prevInfo, [name]: value }));
-  };
+  }, []);
 
   // this function is to validate user credentials
-  const validateCredentials = () => {
+  const validateCredentials = useCallback(() => {
     const { username, password } = loginInfo;
     const userNameRegex = /^[a-zA-Z0-9]{3,}$/;
     const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[a-zA-Z]).{8,}$/;
@@ -56,38 +57,41 @@ const Login = () => {
     }
 
     return true;
-  };
+  }, [loginInfo]);
 
   // this function is used to submit user credentials
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    // this condition used to check whether the username and password meets criteria or not
-    if (!validateCredentials()) {
-      return;
-    }
-    setLoader(true);
-    const { username, password } = loginInfo;
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      setLoader(false);
+  const handleSubmit = useCallback(
+    async (event) => {
+      event.preventDefault();
+      // this condition used to check whether the username and password meets criteria or not
+      if (!validateCredentials()) {
+        return;
+      }
+      setLoader(true);
+      const { username, password } = loginInfo;
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        setLoader(false);
 
-      // USEENAME and PASSWORD defined above the componet using these values validating credentials
-      if (username === USERNAME && password === PASSWORD) {
-        dispatch(login(username));
+        // USEENAME and PASSWORD defined above the componet using these values validating credentials
+        if (username === USERNAME && password === PASSWORD) {
+          dispatch(login(username));
 
-        // Making delay for login process
-        toast.success("successfully logged in");
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        navigate("/home");
-      } else {
-        toast.error("Invalid username or password ");
+          // Making delay for login process
+          toast.success("successfully logged in");
+          await new Promise((resolve) => setTimeout(resolve, 1500));
+          navigate("/home");
+        } else {
+          toast.error("Invalid username or password ");
+          setLoader(false);
+        }
+      } catch (error) {
+        toast.error("An error occurred");
         setLoader(false);
       }
-    } catch (error) {
-      toast.error("An error occurred");
-      setLoader(false);
-    }
-  };
+    },
+    [loginInfo, validateCredentials, dispatch, navigate]
+  );
 
   return (
     <>
@@ -126,7 +130,7 @@ const Login = () => {
                 <div>
                   <label
                     htmlFor="password"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     Password
                   </label>
@@ -159,7 +163,7 @@ const Login = () => {
                 <div className="flex items-center justify-end">
                   <Link
                     href="#"
-                    className="text-sm font-medium text-blue-600 hover:underline dark:text-primary-500"
+                    className="text-sm font-medium text-blue-600 hover:underline "
                   >
                     Forgot password?
                   </Link>

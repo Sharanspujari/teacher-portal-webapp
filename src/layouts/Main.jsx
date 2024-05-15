@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 
 import Model from "../components/Model";
 import Table from "../components/Table";
@@ -7,7 +7,7 @@ const Main = () => {
   const [open, setOpen] = React.useState(false);
 
   // this function is used to open model after clicking on button
-  const handleOpen = () => setOpen(true);
+  const handleOpen = useCallback(() => setOpen(true), []);
 
   return (
     <main className="mt-20 z-0">

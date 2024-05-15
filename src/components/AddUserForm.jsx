@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addStudent } from "../features/studentInfoSlice";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
@@ -11,6 +11,7 @@ import { SyncLoader } from "react-spinners";
 
 const AddUserForm = () => {
   const dispatch = useDispatch();
+  const students = useSelector((state) => state.studentInfo.studentsList);
   const [studentData, setStudentData] = useState({
     name: "",
     subject: "",
@@ -19,13 +20,19 @@ const AddUserForm = () => {
   const [loader, setLoader] = useState(false);
 
   //this function is used to get student info from  input fields
-  const handleChange = (event) => {
+  const handleChange = useCallback((event) => {
     const { name, value } = event.target;
     setStudentData((prevData) => ({ ...prevData, [name]: value }));
-  };
+  }, []);
 
   //this function is used to validate condition for adding student details
-  const validateStudentInfo = () => {
+  const validateStudentInfo = useCallback(() => {
+    // checking that user is already added or not
+    const isExistingStudent = students.find(
+      (student) =>
+        student.name.toLowerCase() === studentData.name.toLowerCase() &&
+        student.subject.toLowerCase() === studentData.subject.toLowerCase()
+    );
     if (studentData.name.length < 2) {
       toast.error("Name must be at least 2 character");
       return false;
@@ -42,32 +49,41 @@ const AddUserForm = () => {
       toast.error("Marks must be a number between 0 and 100.");
       return false;
     }
+    if (isExistingStudent) {
+      toast.warning(
+        `${studentData.name} is already added with ${studentData.subject} subject`
+      );
+      return false;
+    }
     return true;
-  };
+  }, [studentData, students]);
 
   // this function is used to add students details to redux store
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = useCallback(
+    async (event) => {
+      event.preventDefault();
 
-    if (!validateStudentInfo()) {
-      return;
-    }
-    setLoader(true);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      setLoader(false);
-      dispatch(addStudent(studentData));
-      setStudentData({
-        name: "",
-        subject: "",
-        marks: "",
-      });
-      toast.success("Student added successfully");
-    } catch (error) {
-      toast.error(error);
-      setLoader(false);
-    }
-  };
+      if (!validateStudentInfo()) {
+        return;
+      }
+      setLoader(true);
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        setLoader(false);
+        dispatch(addStudent(studentData));
+        setStudentData({
+          name: "",
+          subject: "",
+          marks: "",
+        });
+        toast.success("Student added successfully");
+      } catch (error) {
+        toast.error(error);
+        setLoader(false);
+      }
+    },
+    [dispatch, studentData, validateStudentInfo]
+  );
 
   return (
     <>
@@ -99,7 +115,7 @@ const AddUserForm = () => {
           <div>
             <label
               htmlFor="subject"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 "
             >
               Subject
             </label>
@@ -122,7 +138,7 @@ const AddUserForm = () => {
           <div>
             <label
               htmlFor="marks"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 "
             >
               Marks
             </label>
@@ -151,7 +167,7 @@ const AddUserForm = () => {
           </div>
         </form>
       </div>
-      <ToastContainer toastClassName="fixed top-[9.5%] z-99 bottom-[50%] right-[8%] bg-yellow-300 text-white" />
+      <ToastContainer toastClassName="fixed top-0 z-99  right-[8%] bg-yellow-300 text-white" />
       {loader && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <SyncLoader color="white" size={15} />
