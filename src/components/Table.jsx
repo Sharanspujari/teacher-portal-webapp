@@ -41,8 +41,8 @@ const Table = () => {
     setisOpenAction(isOpenAction === id ? -1 : id);
   };
 
+  // getting list student from redux store using useSelector
   const students = useSelector((state) => state.studentInfo.studentsList);
-  console.log("students: ", students);
 
   return (
     <div className="relative overflow-x-auto px-10 py-4  sm:rounded-lg">
@@ -86,7 +86,7 @@ const Table = () => {
                     <ArrowDropDownOutlinedIcon className="text-white" />
                   </div>
                   {isOpenAction === student.id && (
-                    <div className="w-[60px] absolute top-10 left-2 text-[14px] border flex flex-col items-start px-3 h-auto bg-white rounded shadow-xl">
+                    <div className="w-[60px] absolute top-11 left-1 text-[14px] border flex flex-col items-start px-3 h-auto bg-white rounded shadow-xl">
                       <span className="cursor-pointer text-[13px]">Edit</span>
                       <span className="cursor-pointer text-[13px]">Delete</span>
                     </div>

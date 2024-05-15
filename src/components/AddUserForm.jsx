@@ -7,6 +7,7 @@ import { addStudent } from "../features/studentInfoSlice";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { SyncLoader } from "react-spinners";
 
 const AddUserForm = () => {
   const dispatch = useDispatch();
@@ -15,23 +16,57 @@ const AddUserForm = () => {
     subject: "",
     marks: "",
   });
+  const [loader, setLoader] = useState(false);
 
+  //this function is used to get student info from  input fields
   const handleChange = (event) => {
     const { name, value } = event.target;
     setStudentData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (event) => {
+  //this function is used to validate condition for adding student details
+  const validateStudentInfo = () => {
+    if (studentData.name.length < 2) {
+      toast.error("Name must be at least 2 character");
+      return false;
+    }
+    if (studentData.subject.length < 2) {
+      toast.error("Subject must be at least 2 character");
+      return false;
+    }
+    if (
+      isNaN(studentData.marks) ||
+      studentData.marks < 0 ||
+      studentData.marks > 100
+    ) {
+      toast.error("Marks must be a number between 0 and 100.");
+      return false;
+    }
+    return true;
+  };
+
+  // this function is used to add students details to redux store
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    dispatch(addStudent(studentData));
-
-    setStudentData({
-      name: "",
-      subject: "",
-      marks: "",
-    });
-    toast.success("Student added successfully");
+    if (!validateStudentInfo()) {
+      return;
+    }
+    setLoader(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      setLoader(false);
+      dispatch(addStudent(studentData));
+      setStudentData({
+        name: "",
+        subject: "",
+        marks: "",
+      });
+      toast.success("Student added successfully");
+    } catch (error) {
+      toast.error(error);
+      setLoader(false);
+    }
   };
 
   return (
@@ -93,7 +128,7 @@ const AddUserForm = () => {
             </label>
             <div className="relative">
               <input
-                type="text"
+                type="number"
                 name="marks"
                 value={studentData?.marks}
                 onChange={handleChange}
@@ -117,6 +152,11 @@ const AddUserForm = () => {
         </form>
       </div>
       <ToastContainer toastClassName="fixed top-[9.5%] z-99 bottom-[50%] right-[8%] bg-yellow-300 text-white" />
+      {loader && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <SyncLoader color="white" size={15} />
+        </div>
+      )}
     </>
   );
 };

@@ -4,10 +4,12 @@ import Main from "../layouts/Main";
 
 const Dashboard = () => {
   return (
-    <div className="flex flex-col gap-8">
-      <Header />
-      <Main />
-    </div>
+    <>
+      <div className="flex flex-col gap-8">
+        <Header />
+        <Main />
+      </div>
+    </>
   );
 };
 

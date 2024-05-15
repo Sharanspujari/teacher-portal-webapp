@@ -6,6 +6,7 @@ import Table from "../components/Table";
 const Main = () => {
   const [open, setOpen] = React.useState(false);
 
+  // this function is used to open model after clicking on button
   const handleOpen = () => setOpen(true);
 
   return (

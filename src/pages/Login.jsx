@@ -11,7 +11,11 @@ import { login } from "../features/authSlice";
 import { useNavigate } from "react-router-dom";
 import { SyncLoader } from "react-spinners";
 
+const USERNAME = "admin";
+const PASSWORD = "Password@123";
+
 const Login = () => {
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loginInfo, setLoginInfo] = useState({
@@ -32,22 +36,56 @@ const Login = () => {
     setLoginInfo((prevInfo) => ({ ...prevInfo, [name]: value }));
   };
 
+  // this function is to validate user credentials
+  const validateCredentials = () => {
+    const { username, password } = loginInfo;
+    const userNameRegex = /^[a-zA-Z0-9]{3,}$/;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[a-zA-Z]).{8,}$/;
+
+    if (!userNameRegex.test(username)) {
+      toast.error(
+        "Username should be atleast 3 character long and contain only letters and numbers "
+      );
+      return false;
+    }
+    if (!passwordRegex.test(password)) {
+      toast.error(
+        "Password should be at least 8 characters long, contain one uppercase letter, and one special character"
+      );
+      return false;
+    }
+
+    return true;
+  };
+
   // this function is used to submit user credentials
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    // this condition used to check whether the username and password meets criteria or not
+    if (!validateCredentials()) {
+      return;
+    }
     setLoader(true);
     const { username, password } = loginInfo;
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      setLoader(false);
 
-    if (username === "admin" && password === "password") {
-      dispatch(login(username));
+      // USEENAME and PASSWORD defined above the componet using these values validating credentials
+      if (username === USERNAME && password === PASSWORD) {
+        dispatch(login(username));
 
-      setTimeout(() => {
-        setLoader(false);
+        // Making delay for login process
+        toast.success("successfully logged in");
+        await new Promise((resolve) => setTimeout(resolve, 1500));
         navigate("/home");
-      }, 2000);
-      toast.success("successfully logged in");
-    } else {
-      toast.error("Invalid username or password ");
+      } else {
+        toast.error("Invalid username or password ");
+        setLoader(false);
+      }
+    } catch (error) {
+      toast.error("An error occurred");
+      setLoader(false);
     }
   };
 
